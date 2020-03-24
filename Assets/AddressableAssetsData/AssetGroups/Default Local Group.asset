@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 0ff1966d6ca694c75a245a4b0c1a68aa
+  m_SerializeEntries:
+  - m_GUID: 03f2d13cc0e314bb78e0a543eaa75db0
+    m_Address: Assets/Test/TestDialog.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui_prefab
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0f1c7219a5af2409292acc2a0f777eb0
+    m_Address: Assets/Test/TestWidget.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui_prefab
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e36f89e7cf74c4e04b308e79002b172f
+    m_Address: Assets/Test/TestHud.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui_prefab
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 25049d2ee458f46f8b99c124f08459aa, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: cd19ffef50c8646aeb0acba78e72712f, type: 2}
+    - {fileID: 11400000, guid: 837faccecfb174c2d92253f4e370b493, type: 2}
