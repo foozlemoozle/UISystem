@@ -1,0 +1,9 @@
+{
+	"name" : "com.keg.uisystem",
+	"version" : "0.1.0",
+	"displayName" : "UISystem",
+	"description" : "UI Management system that sits on top of Unity's UI system.  Includes loading logic for Unity's Addressables.",
+	"unity" : "2019.2",
+	"dependencies" : {
+		"com.unity.addressables" : "1.7.4"
+	}
