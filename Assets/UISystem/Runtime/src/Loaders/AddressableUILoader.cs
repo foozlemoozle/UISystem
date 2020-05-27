@@ -9,41 +9,44 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using AddressableAssetsIResourceLocator = UnityEngine.AddressableAssets.ResourceLocators.IResourceLocator;
 using ResourceManagementIResourceLocator = UnityEngine.ResourceManagement.ResourceLocations.IResourceLocation;
 
-public interface IAddressableUILoader
+namespace com.keg.uisystem
 {
-    string addressablePath { get; }
-    string addressableGroup { get; }
-    void OnLoadComplete( AsyncOperationHandle<UnityEngine.GameObject> loaded );
-}
-
-public class AddressableUILoader<T> : Loader<T>, IAddressableUILoader where T : UIView
-{
-    public string addressablePath => _path;
-    public string addressableGroup => _group;
-
-    private string _path;
-    private string _group;
-
-    public AddressableUILoader( string path, string group )
+    public interface IAddressableUILoader
     {
-        _path = path;
-        _group = group;
+        string addressablePath { get; }
+        string addressableGroup { get; }
+        void OnLoadComplete( AsyncOperationHandle<UnityEngine.GameObject> loaded );
     }
 
-    public override void StartLoad()
+    public class AddressableUILoader<T> : Loader<T>, IAddressableUILoader where T : UIView
     {
-        AddressableManager.Get().QueueLoader( this );
-    }
+        public string addressablePath => _path;
+        public string addressableGroup => _group;
 
-    public void OnLoadComplete( AsyncOperationHandle<UnityEngine.GameObject> loaded )
-    {
-        if( loaded.IsDone && loaded.Status == AsyncOperationStatus.Succeeded )
+        private string _path;
+        private string _group;
+
+        public AddressableUILoader( string path, string group )
         {
-            OnLoaded( loaded.Result );
+            _path = path;
+            _group = group;
         }
-        else
+
+        public override void StartLoad()
         {
-            Reject( loaded.Result );
+            AddressableManager.Get().QueueLoader( this );
+        }
+
+        public void OnLoadComplete( AsyncOperationHandle<UnityEngine.GameObject> loaded )
+        {
+            if( loaded.IsDone && loaded.Status == AsyncOperationStatus.Succeeded )
+            {
+                OnLoaded( loaded.Result );
+            }
+            else
+            {
+                Reject( loaded.Result );
+            }
         }
     }
 }

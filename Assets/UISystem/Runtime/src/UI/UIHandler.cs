@@ -8,101 +8,104 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUIHandler
+namespace com.keg.uisystem
 {
-    IUIContext context { get; }
-    UIID id { get; }
-	void Teardown();
-}
-
-public class UIHandler<UI> : IUIHandler where UI : UIView
-{
-	public IUIContext context { get; private set; }
-	public UIID id { get; private set; }
-	public UI ui { get; private set; }
-
-	protected int _minSort;
-	protected int _maxSort;
-
-	private Loader<UI> _loader;
-
-	private Queue<System.Action<UI>> _postLoadQueue;
-
-	public UIHandler( Loader<UI> loader, IUIContext context, UIID id, int minSort, int maxSort )
+	public interface IUIHandler
 	{
-		_loader = loader;
-		this.context = context;
-		this.id = id;
-		_minSort = minSort;
-		_maxSort = maxSort;
-
-		_postLoadQueue = new Queue<System.Action<UI>>();
-
-		_loader.onAccepted = OnUILoadComplete;
-		_loader.onComplete = OnUIPostLoadProcessesComplete;
-		_loader.onFailed = OnUILoadFailed;
-		_loader.StartLoad();
+		IUIContext context { get; }
+		UIID id { get; }
+		void Teardown();
 	}
 
-	public UIHandler<UI> Exec( System.Action<UI> action )
+	public class UIHandler<UI> : IUIHandler where UI : UIView
 	{
-		if( action == null )
+		public IUIContext context { get; private set; }
+		public UIID id { get; private set; }
+		public UI ui { get; private set; }
+
+		protected int _minSort;
+		protected int _maxSort;
+
+		private Loader<UI> _loader;
+
+		private Queue<System.Action<UI>> _postLoadQueue;
+
+		public UIHandler( Loader<UI> loader, IUIContext context, UIID id, int minSort, int maxSort )
 		{
+			_loader = loader;
+			this.context = context;
+			this.id = id;
+			_minSort = minSort;
+			_maxSort = maxSort;
+
+			_postLoadQueue = new Queue<System.Action<UI>>();
+
+			_loader.onAccepted = OnUILoadComplete;
+			_loader.onComplete = OnUIPostLoadProcessesComplete;
+			_loader.onFailed = OnUILoadFailed;
+			_loader.StartLoad();
+		}
+
+		public UIHandler<UI> Exec( System.Action<UI> action )
+		{
+			if( action == null )
+			{
+				return this;
+			}
+
+			if( ui != null )
+			{
+				action( ui );
+			}
+			else
+			{
+				_postLoadQueue.Enqueue( action );
+			}
+
 			return this;
 		}
 
-		if( ui != null )
+		private void OnUILoadComplete()
 		{
-			action( ui );
-		}
-		else
-		{
-			_postLoadQueue.Enqueue( action );
+			ui = _loader.ui;
+			ui.Initialize( id, _minSort, _maxSort, context );
 		}
 
-		return this;
-	}
-
-	private void OnUILoadComplete()
-	{
-		ui = _loader.ui;
-		ui.Initialize( id, _minSort, _maxSort, context );
-	}
-
-	private void OnUIPostLoadProcessesComplete()
-	{
-		_loader = null;
-
-		while( _postLoadQueue.Count > 0 )
+		private void OnUIPostLoadProcessesComplete()
 		{
-			var exec = _postLoadQueue.Dequeue();
-			if( exec != null )
+			_loader = null;
+
+			while( _postLoadQueue.Count > 0 )
 			{
-				exec( ui );
+				var exec = _postLoadQueue.Dequeue();
+				if( exec != null )
+				{
+					exec( ui );
+				}
 			}
 		}
-	}
 
-	private void OnUILoadFailed()
-	{
-		_loader = null;
-		Teardown();
-	}
-
-	public void Teardown()
-	{
-		_postLoadQueue.Clear();
-		context.parent.Remove( id );
-
-		if( _loader != null )
+		private void OnUILoadFailed()
 		{
-			_loader.Cancel();
 			_loader = null;
+			Teardown();
 		}
-		if( ui != null )
+
+		public void Teardown()
 		{
-			GameObject.Destroy( ui.gameObject );
-			ui = null;
+			_postLoadQueue.Clear();
+			context.parent.Remove( id );
+
+			if( _loader != null )
+			{
+				_loader.Cancel();
+				_loader = null;
+			}
+			if( ui != null )
+			{
+				GameObject.Destroy( ui.gameObject );
+				ui = null;
+			}
 		}
 	}
 }

@@ -10,110 +10,113 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent( typeof( Canvas ) )]
-public class DeviceFrame : MonoBehaviour
+namespace com.keg.uisystem
 {
-	public enum Panels
+	[RequireComponent( typeof( Canvas ) )]
+	public class DeviceFrame : MonoBehaviour
 	{
-		Header = 1,
-		Footer = 2,
-		Left = 4,
-		Right = 8
-	}
-
-	[SerializeField]
-	[RequiredField]
-	private RectTransform _dialogContainer;
-	[SerializeField]
-	[RequiredField]
-	private RectTransform _fullScreenContainer;
-	
-	[SerializeField]
-	private RectTransform _header;
-	[SerializeField]
-	private RectTransform _footer;
-	[SerializeField]
-	private RectTransform _left;
-	[SerializeField]
-	private RectTransform _right;
-
-	private Canvas _canvas;
-	public Canvas canvas { get { if( _canvas == null ){ _canvas = this.GetComponent<Canvas>(); } return _canvas; } }
-
-	public void ResizeSafeArea( float top, float bottom, float left, float right )
-	{
-		_dialogContainer.offsetMin = new Vector2( left, top );
-		_dialogContainer.offsetMax = new Vector2( right, bottom );
-
-		ResizeHeader( top );
-		ResizeFooter( bottom );
-		ResizeLeft( left );
-		ResizeRight( right );
-	}
-
-	public void AttachUI( UIView ui )
-	{
-		Transform hook = ui.ignoreFrameLayout ? _fullScreenContainer : _dialogContainer;
-		ui.transform.SetParent( hook, false );
-	}
-
-	public void ShowPanels( Panels toShow )
-	{
-		_header.gameObject.SetActiveIfNeeded( ( toShow & Panels.Header ) != 0 );
-		_footer.gameObject.SetActiveIfNeeded( ( toShow & Panels.Footer ) != 0 );
-		_left.gameObject.SetActiveIfNeeded( ( toShow & Panels.Left ) != 0 );
-		_right.gameObject.SetActiveIfNeeded( ( toShow & Panels.Right ) != 0 );
-	}
-
-	private void ResizeHeader( float top )
-	{
-		if( _header == null )
+		public enum Panels
 		{
-			return;
+			Header = 1,
+			Footer = 2,
+			Left = 4,
+			Right = 8
 		}
 
-		_header.sizeDelta = new Vector2(
-			_header.sizeDelta.x,
-			top
-		);
-	}
+		[SerializeField]
+		[RequiredField]
+		private RectTransform _dialogContainer;
+		[SerializeField]
+		[RequiredField]
+		private RectTransform _fullScreenContainer;
 
-	private void ResizeFooter( float bottom )
-	{
-		if( _footer == null )
+		[SerializeField]
+		private RectTransform _header;
+		[SerializeField]
+		private RectTransform _footer;
+		[SerializeField]
+		private RectTransform _left;
+		[SerializeField]
+		private RectTransform _right;
+
+		private Canvas _canvas;
+		public Canvas canvas { get { if( _canvas == null ) { _canvas = this.GetComponent<Canvas>(); } return _canvas; } }
+
+		public void ResizeSafeArea( float top, float bottom, float left, float right )
 		{
-			return;
+			_dialogContainer.offsetMin = new Vector2( left, top );
+			_dialogContainer.offsetMax = new Vector2( right, bottom );
+
+			ResizeHeader( top );
+			ResizeFooter( bottom );
+			ResizeLeft( left );
+			ResizeRight( right );
 		}
 
-		_footer.sizeDelta = new Vector2( 
-			_footer.sizeDelta.x,
-			bottom
-		);
-	}
-
-	private void ResizeLeft( float left )
-	{
-		if( _left == null )
+		public void AttachUI( UIView ui )
 		{
-			return;
+			Transform hook = ui.ignoreFrameLayout ? _fullScreenContainer : _dialogContainer;
+			ui.transform.SetParent( hook, false );
 		}
 
-		_left.sizeDelta = new Vector2( 
-			left,
-			_left.sizeDelta.y
-		);
-	}
-
-	private void ResizeRight( float right )
-	{
-		if( _right == null )
+		public void ShowPanels( Panels toShow )
 		{
-			return;
+			_header.gameObject.SetActiveIfNeeded( ( toShow & Panels.Header ) != 0 );
+			_footer.gameObject.SetActiveIfNeeded( ( toShow & Panels.Footer ) != 0 );
+			_left.gameObject.SetActiveIfNeeded( ( toShow & Panels.Left ) != 0 );
+			_right.gameObject.SetActiveIfNeeded( ( toShow & Panels.Right ) != 0 );
 		}
 
-		_right.sizeDelta = new Vector2(
-			right,
-			_right.sizeDelta.y
-		);
+		private void ResizeHeader( float top )
+		{
+			if( _header == null )
+			{
+				return;
+			}
+
+			_header.sizeDelta = new Vector2(
+				_header.sizeDelta.x,
+				top
+			);
+		}
+
+		private void ResizeFooter( float bottom )
+		{
+			if( _footer == null )
+			{
+				return;
+			}
+
+			_footer.sizeDelta = new Vector2(
+				_footer.sizeDelta.x,
+				bottom
+			);
+		}
+
+		private void ResizeLeft( float left )
+		{
+			if( _left == null )
+			{
+				return;
+			}
+
+			_left.sizeDelta = new Vector2(
+				left,
+				_left.sizeDelta.y
+			);
+		}
+
+		private void ResizeRight( float right )
+		{
+			if( _right == null )
+			{
+				return;
+			}
+
+			_right.sizeDelta = new Vector2(
+				right,
+				_right.sizeDelta.y
+			);
+		}
 	}
 }

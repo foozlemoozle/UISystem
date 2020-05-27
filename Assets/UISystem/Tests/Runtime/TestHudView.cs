@@ -1,24 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using com.keg.uisystem;
 
-public class TestHudView : UIView
+namespace com.keg.uisystem.tests
 {
-    public static readonly string PATH = "Assets/Test/TestHud.prefab";
-    public static readonly string GROUP = "ui_prefab";
-
-    public override uint expectedPostLoadProcesses => 0;
-
-    private Stack<IUIHandler> _toRemove = new Stack<IUIHandler>();
-
-    public void OnAddDialog()
+    public class TestHudView : UIView
     {
-        AddressableUILoader<TestDialogView> loader = new AddressableUILoader<TestDialogView>( TestDialogView.PATH, TestDialogView.GROUP );
-        _toRemove.Push( parent.Attach<TestDialogView>( loader, 1 ) );
-    }
+        public static readonly string PATH = "Assets/Test/TestHud.prefab";
+        public static readonly string GROUP = "ui_prefab";
 
-    public void OnRemoveDialog()
-    {
-        _toRemove.Pop().Teardown();
+        public override uint expectedPostLoadProcesses => 0;
+
+        private Stack<IUIHandler> _toRemove = new Stack<IUIHandler>();
+
+        public void OnAddDialog()
+        {
+            AddressableUILoader<TestDialogView> loader = new AddressableUILoader<TestDialogView>( TestDialogView.PATH, TestDialogView.GROUP );
+            _toRemove.Push( parent.Attach<TestDialogView>( loader, 1 ) );
+        }
+
+        public void OnRemoveDialog()
+        {
+            _toRemove.Pop().Teardown();
+        }
     }
 }

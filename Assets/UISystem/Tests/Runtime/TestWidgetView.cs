@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using com.keg.uisystem;
 
-public class TestWidgetView : UIView
+namespace com.keg.uisystem.tests
 {
-    public static readonly string PATH = "Assets/Test/TestWidget.prefab";
-    public static readonly string GROUP = "ui_prefab";
+    public class TestWidgetView : UIView
+    {
+        public static readonly string PATH = "Assets/Test/TestWidget.prefab";
+        public static readonly string GROUP = "ui_prefab";
 
-    public override uint expectedPostLoadProcesses => 0;
+        public override uint expectedPostLoadProcesses => 0;
+    }
 }

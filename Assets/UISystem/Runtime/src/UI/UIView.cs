@@ -9,185 +9,188 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public abstract class UIView : UIBehaviour, IHeapManager, IUIContext
+namespace com.keg.uisystem
 {
-	public UIID id { get; private set; }
-	public IUIContext context { get; private set; }
-
-	[SerializeField]
-	private bool _ignoreFrameLayout = false;
-	public bool ignoreFrameLayout { get { return _ignoreFrameLayout; } }
-
-	private Canvas _canvas;
-	public Canvas canvas
+	public abstract class UIView : UIBehaviour, IHeapManager, IUIContext
 	{
-		get
+		public UIID id { get; private set; }
+		public IUIContext context { get; private set; }
+
+		[SerializeField]
+		private bool _ignoreFrameLayout = false;
+		public bool ignoreFrameLayout { get { return _ignoreFrameLayout; } }
+
+		private Canvas _canvas;
+		public Canvas canvas
 		{
-			if( _canvas == null )
+			get
 			{
-				_canvas = this.GetComponent<Canvas>();
+				if( _canvas == null )
+				{
+					_canvas = this.GetComponent<Canvas>();
+				}
+				if( _canvas == null )
+				{
+					_canvas = this.gameObject.AddComponent<Canvas>();
+					_canvas.overrideSorting = true;
+				}
+				if( this.GetComponent<GraphicRaycaster>() == null )
+				{
+					this.gameObject.AddComponent<GraphicRaycaster>();
+				}
+
+				return _canvas;
 			}
-			if( _canvas == null )
+		}
+
+		protected Dictionary<UIID, IUIHandler> _managedUIs;
+		protected Dictionary<UIID, ParamSet> _managedUIsSetupParams;
+
+		#region IUIContext
+		public IHeapManager parent => _parent;
+		private IHeapManager _parent = null;
+		public IHeapManager heapManager => this;
+		#endregion
+
+		#region IHeapManager
+		public int MIN_SORT { get; private set; }
+		public int MAX_SORT { get; private set; }
+		public UISortingLayer.Layers LAYER { get { return parent.LAYER; } }
+		#endregion
+
+		#region LoadSequence
+		public abstract uint expectedPostLoadProcesses { get; }
+		protected uint completedPostLoadProcesses = 0;
+		private System.Action _onPostLoadProcessesComplete;
+
+		public void Initialize( UIID id, int minSort, int maxSort, IUIContext context )
+		{
+			this.id = id;
+			this.context = context;
+			_parent = context.heapManager;
+			MIN_SORT = minSort;
+			MAX_SORT = maxSort;
+
+			canvas.sortingOrder = MIN_SORT;
+			canvas.sortingLayerName = this.context.parent.LAYER.ToString();
+
+			PostInitialize();
+		}
+
+		protected virtual void PostInitialize()
+		{
+		}
+
+		public void StartPostLoadProcesses( System.Action onPostLoadProcessesComplete )
+		{
+			_onPostLoadProcessesComplete = onPostLoadProcessesComplete;
+			completedPostLoadProcesses = 0;
+
+			PreStartPostLoadProcesses();
+
+			if( AllPostLoadProcessesComplete() )
 			{
-				_canvas = this.gameObject.AddComponent<Canvas>();
-				_canvas.overrideSorting = true;
+				PostLoadProcessesComplete();
 			}
-			if( this.GetComponent<GraphicRaycaster>() == null )
+		}
+
+		protected virtual void PreStartPostLoadProcesses()
+		{
+		}
+
+		public void Update()
+		{
+			if( _onPostLoadProcessesComplete != null && AllPostLoadProcessesComplete() )
 			{
-				this.gameObject.AddComponent<GraphicRaycaster>();
+				PostLoadProcessesComplete();
+			}
+		}
+
+		public bool AllPostLoadProcessesComplete()
+		{
+			return expectedPostLoadProcesses == completedPostLoadProcesses;
+		}
+
+		private void PostLoadProcessesComplete()
+		{
+			if( _onPostLoadProcessesComplete != null )
+			{
+				_onPostLoadProcessesComplete();
+				_onPostLoadProcessesComplete = null;
+			}
+		}
+		#endregion
+
+		public virtual void Setup( ParamSet paramSet )
+		{
+		}
+
+		#region IHeapManager
+		public UIHandler<UI> Attach<UI>( Loader<UI> loader, int requiredSortOrders, ParamSet setupParams = null, CullSettings cullSettings = CullSettings.NoCullNoClear ) where UI : UIView
+		{
+			CheckAndInitializeChildUIManagement();
+
+			UIID newId = UIID.Generate( cullSettings );
+			_managedUIsSetupParams.Add( newId, setupParams );
+
+			int minSort = GetMinSortForChildUI();
+			int maxSort = minSort + requiredSortOrders;
+
+			UpdateMinSortForNextChildUI( maxSort );
+
+			UIHandler<UI> handler = new UIHandler<UI>( loader, this, newId, minSort, maxSort )
+				.Exec( SetParent );
+
+			_managedUIs.Add( newId, handler );
+
+			return handler;
+		}
+
+		public bool Remove( UIID id )
+		{
+			if( _managedUIs.ContainsKey( id ) )
+			{
+				IUIHandler handler = _managedUIs[ id ];
+
+				_managedUIsSetupParams.Remove( id );
+				_managedUIs.Remove( id );
+
+				handler.Teardown();
+
+				return true;
 			}
 
-			return _canvas;
+			return false;
 		}
-	}
+		#endregion
 
-	protected Dictionary<UIID, IUIHandler> _managedUIs;
-	protected Dictionary<UIID, ParamSet> _managedUIsSetupParams;
-
-#region IUIContext
-	public IHeapManager parent => _parent;
-	private IHeapManager _parent = null;
-	public IHeapManager heapManager => this;
-#endregion
-
-#region IHeapManager
-	public int MIN_SORT { get; private set; }
-	public int MAX_SORT { get; private set; }
-	public UISortingLayer.Layers LAYER { get { return parent.LAYER; } }
-#endregion
-
-#region LoadSequence
-	public abstract uint expectedPostLoadProcesses{ get; }
-	protected uint completedPostLoadProcesses = 0;
-	private System.Action _onPostLoadProcessesComplete;
-
-	public void Initialize( UIID id, int minSort, int maxSort, IUIContext context )
-	{
-		this.id = id;
-		this.context = context;
-		_parent = context.heapManager;
-		MIN_SORT = minSort;
-		MAX_SORT = maxSort;
-
-		canvas.sortingOrder = MIN_SORT;
-		canvas.sortingLayerName = this.context.parent.LAYER.ToString();
-
-		PostInitialize();
-	}
-
-	protected virtual void PostInitialize()
-	{
-	}
-
-	public void StartPostLoadProcesses( System.Action onPostLoadProcessesComplete )
-	{
-		_onPostLoadProcessesComplete = onPostLoadProcessesComplete;
-		completedPostLoadProcesses = 0;
-
-		PreStartPostLoadProcesses();
-
-		if( AllPostLoadProcessesComplete() )
+		private void CheckAndInitializeChildUIManagement()
 		{
-			PostLoadProcessesComplete();
+			if( _managedUIs == null )
+			{
+				_managedUIs = new Dictionary<UIID, IUIHandler>();
+			}
+			if( _managedUIsSetupParams == null )
+			{
+				_managedUIsSetupParams = new Dictionary<UIID, ParamSet>();
+			}
 		}
-	}
 
-	protected virtual void PreStartPostLoadProcesses()
-	{
-	}
-
-	public void Update()
-	{
-		if( _onPostLoadProcessesComplete != null && AllPostLoadProcessesComplete() )
+		protected virtual int GetMinSortForChildUI()
 		{
-			PostLoadProcessesComplete();
+			return MIN_SORT;
 		}
-	}
 
-	public bool AllPostLoadProcessesComplete()
-	{
-		return expectedPostLoadProcesses == completedPostLoadProcesses;
-	}
-
-	private void PostLoadProcessesComplete()
-	{
-		if( _onPostLoadProcessesComplete != null )
+		protected virtual void UpdateMinSortForNextChildUI( int maxSort )
 		{
-			_onPostLoadProcessesComplete();
-			_onPostLoadProcessesComplete = null;
+			//this does nothing at a base level
+			//this should be overwritten for more specific sub-ui management
 		}
-	}
-#endregion
 
-	public virtual void Setup( ParamSet paramSet )
-	{
-	}
-
-#region IHeapManager
-	public UIHandler<UI> Attach<UI>( Loader<UI> loader, int requiredSortOrders, ParamSet setupParams = null, CullSettings cullSettings = CullSettings.NoCullNoClear ) where UI : UIView
-	{
-		CheckAndInitializeChildUIManagement();
-
-		UIID newId = UIID.Generate( cullSettings );
-		_managedUIsSetupParams.Add( newId, setupParams );
-
-		int minSort = GetMinSortForChildUI();
-		int maxSort = minSort + requiredSortOrders;
-
-		UpdateMinSortForNextChildUI( maxSort );
-
-		UIHandler<UI> handler = new UIHandler<UI>( loader, this, newId, minSort, maxSort )
-			.Exec( SetParent );
-
-		_managedUIs.Add( newId, handler );
-
-		return handler;
-	}
-
-	public bool Remove( UIID id )
-	{
-		if( _managedUIs.ContainsKey( id ) )
+		protected virtual void SetParent<UI>( UI ui ) where UI : UIView
 		{
-			IUIHandler handler = _managedUIs[ id ];
-
-			_managedUIsSetupParams.Remove( id );
-			_managedUIs.Remove( id );
-
-			handler.Teardown();
-
-			return true;
+			//by default, just child it to this
+			ui.transform.SetParent( this.transform, false );
 		}
-
-		return false;
 	}
-#endregion
-
-    private void CheckAndInitializeChildUIManagement()
-    {
-        if( _managedUIs == null )
-        {
-			_managedUIs = new Dictionary<UIID, IUIHandler>();
-        }
-        if( _managedUIsSetupParams == null )
-        {
-			_managedUIsSetupParams = new Dictionary<UIID, ParamSet>();
-        }
-    }
-
-    protected virtual int GetMinSortForChildUI()
-    {
-		return MIN_SORT;
-    }
-
-    protected virtual void UpdateMinSortForNextChildUI( int maxSort )
-    {
-        //this does nothing at a base level
-        //this should be overwritten for more specific sub-ui management
-    }
-
-    protected virtual void SetParent<UI>( UI ui ) where UI : UIView
-    {
-        //by default, just child it to this
-		ui.transform.SetParent( this.transform, false );
-    }
 }

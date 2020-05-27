@@ -1,33 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using com.keg.uisystem;
 
-public class TestRunner : MonoBehaviour
+namespace com.keg.uisystem.tests
 {
-    private UIHandler<TestHudView> _handler;
-
-    public void Awake()
+    public class TestRunner : MonoBehaviour
     {
-        UIManager.ListenOnUIManagerSetup( LoadTestDialog );
-    }
+        private UIHandler<TestHudView> _handler;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnDestroy()
-    {
-        if( _handler != null )
+        public void Awake()
         {
-            _handler.Teardown();
+            UIManager.ListenOnUIManagerSetup( LoadTestDialog );
         }
-    }
 
-    private void LoadTestDialog( UIManager uiManager )
-    {
-        AddressableUILoader<TestHudView> loader = new AddressableUILoader<TestHudView>( TestHudView.PATH, TestHudView.GROUP );
-        _handler = uiManager.Attach<TestHudView>( loader, 1, null, CullSettings.NoCullNoClear );
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        private void OnDestroy()
+        {
+            if( _handler != null )
+            {
+                _handler.Teardown();
+            }
+        }
+
+        private void LoadTestDialog( UIManager uiManager )
+        {
+            AddressableUILoader<TestHudView> loader = new AddressableUILoader<TestHudView>( TestHudView.PATH, TestHudView.GROUP );
+            _handler = uiManager.Attach<TestHudView>( loader, 1, null, CullSettings.NoCullNoClear );
+        }
     }
 }

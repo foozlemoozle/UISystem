@@ -8,8 +8,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUIContext 
+namespace com.keg.uisystem
 {
-	IHeapManager parent { get; }
-    IHeapManager heapManager { get; }
+	public interface IUIContext
+	{
+		IHeapManager parent { get; }
+		IHeapManager heapManager { get; }
+	}
 }
