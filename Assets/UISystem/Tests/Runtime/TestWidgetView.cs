@@ -7,7 +7,7 @@ namespace com.keg.uisystem.tests
 {
     public class TestWidgetView : UIView
     {
-        public static readonly string PATH = "Assets/Test/TestWidget.prefab";
+        public static readonly string PATH = "Assets/UISystem/Tests/Runtime/TestWidget.prefab";
         public static readonly string GROUP = "ui_prefab";
 
         public override uint expectedPostLoadProcesses => 0;
