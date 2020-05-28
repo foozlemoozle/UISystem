@@ -11,11 +11,19 @@ using UnityEngine;
 using com.keg.bootstrap;
 using System.Threading.Tasks;
 
+using com.keg.addressableloadmanagement;
+using com.keg.utils;
+
 namespace com.keg.uisystem
 {
     [RequireComponent( typeof( Camera ) )]
     public class UIManager : IHeapManager, IManager
     {
+        public static readonly string UI_CAMERA_PATH = "ui_common/UI_Camera.prefab";
+        public static readonly string UI_CAMERA_GROUP = "ui_common";
+        public static readonly string DEVICE_FRAME_PATH = "ui_common/UI_DeviceFrame.prefab";
+        public static readonly string DEVICE_FRAME_GROUP = "ui_common";
+
         //For IHeapManager's implementatin of Min and Max sort.
         //Doesn't really mean anything for UIManager.  
         #region IHeapManager
@@ -51,12 +59,61 @@ namespace com.keg.uisystem
             _layerRoot = layerRoot;
 		}
 
+		public UIManager()
+		{
+		}
+
 		#region IManager
 		public async Task Setup( BootStrap bootstrap, System.Action<IManager> onSetup, System.Action<IManager> onSetupFail )
         {
-            await Task.Run( SetupInternal );
+            PromiseChain promise = new PromiseChain();
+            if( _layerRoot == null )
+            {
+                promise.Then( LoadUICamera );
+            }
+            if( _layerPrefab == null )
+            {
+                promise.Then( LoadDeviceFrame );
+            }
+            await promise.Exec();
+
+            SetupInternal();
+
             onSetup( this );
         }
+
+		public async Task LoadUICamera()
+		{
+            IAddressableLoader uiCameraLoader = null;
+            uiCameraLoader.Load<GameObject>( UI_CAMERA_PATH, UI_CAMERA_GROUP, OnUICameraLoaded );
+			while( _layerRoot == null )
+			{
+                await Task.Yield();
+			}
+		}
+
+		private void OnUICameraLoaded( GameObject asset )
+		{
+            Debug.LogFormat( "<color=green>INFO:</color> Loaded <color=cyan>{0}</color>", asset.name );
+            _layerRoot = GameObject.Instantiate( asset ).transform;
+            Object.DontDestroyOnLoad( _layerRoot );
+		}
+
+		public async Task LoadDeviceFrame()
+		{
+            IAddressableLoader deviceFrameLoader = null;
+            deviceFrameLoader.Load<DeviceFrame>( DEVICE_FRAME_PATH, DEVICE_FRAME_GROUP, OnDeviceFrameLoaded );
+			while( _layerPrefab == null )
+			{
+                await Task.Yield();
+			}
+		}
+
+		private void OnDeviceFrameLoaded( DeviceFrame asset )
+		{
+            Debug.LogFormat( "<color=green>INFO:</color> Loaded <color=cyan>{0}</color>", asset.name );
+            _layerPrefab = asset;
+		}
 
 		public void Update()
 		{
@@ -211,6 +268,8 @@ namespace com.keg.uisystem
             _layers = null;
             _uiToLayerMap = null;
             _layerCullRefCount = null;
+            _layerPrefab.gameObject.ReleaseAddressable();
+            _layerRoot.gameObject.ReleaseAddressable();
 		}
     }
 }

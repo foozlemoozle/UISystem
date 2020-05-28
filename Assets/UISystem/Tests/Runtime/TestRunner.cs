@@ -6,26 +6,39 @@ using com.keg.bootstrap;
 
 namespace com.keg.uisystem.tests
 {
-    public class TestRunner : UIService
+    public class TestRunner : MonoBehaviour
     {
         private UIHandler<TestHudView> _handler;
+        private UIManager _uiManager;
 
-        // Update is called once per frame
-        void Update()
+		private void Awake()
+		{
+            _uiManager = new UIManager();
+            _uiManager.Setup( null, OnSetupFinished, OnSetupFailed );
+		}
+
+		// Update is called once per frame
+		void Update()
         {
 
         }
 
-		protected override void OnSetupFinished( IManager manager )
+		protected void OnSetupFinished( IManager manager )
 		{
-			base.OnSetupFinished( manager );
             LoadTestDialog( manager as UIManager );
 		}
 
-		protected override void OnTeardown()
+        private void OnSetupFailed( IManager manager )
         {
-            base.OnTeardown();
+        }
 
+		private void OnDestroy()
+		{
+            _uiManager.Teardown( OnTeardown );
+		}
+
+		protected void OnTeardown()
+        {
             if( _handler != null )
             {
                 _handler.Teardown();

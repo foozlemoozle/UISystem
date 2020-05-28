@@ -20,7 +20,17 @@ namespace com.keg.addressableloadmanagement
 
         public void OnLoadComplete( AsyncOperationHandle<UnityEngine.Object> loaded )
 		{
-			_onLoaded?.Invoke( loaded.Result as T );
+			var type = typeof( T );
+			T result = null;
+			if( type.IsSubclassOf( typeof( UnityEngine.Component ) ) )
+			{
+				result = ( (UnityEngine.GameObject)loaded.Result ).GetComponent<T>();
+			}
+			else
+			{
+				result = loaded.Result as T;
+			}
+			_onLoaded?.Invoke( result );
 		}
     }
 }

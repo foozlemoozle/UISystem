@@ -31,8 +31,9 @@ namespace com.keg.uisystem
         [SerializeField]
         private bool _setupOnAwake = true;
         [SerializeField]
-		[RequiredField]
-        private UIReferenceHolder _refenceHolder;
+        [RequiredField]
+        private DeviceFrame _layerPrefab;
+        public DeviceFrame layerPrefab => _layerPrefab;
 
         private UIManager _uiManager;
         public UIManager UIManager => _uiManager;
@@ -47,7 +48,7 @@ namespace com.keg.uisystem
 
 		public void Setup()
 		{
-            var manager = new UIManager( _refenceHolder.layerPrefab, this.transform );
+            var manager = new UIManager( layerPrefab, this.transform );
             manager.Setup( null, OnSetupFinished, OnSetupFailed );
 		}
 

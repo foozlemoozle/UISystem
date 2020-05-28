@@ -15,9 +15,33 @@ MonoBehaviour:
   m_GroupName: ui_common
   m_Data:
     m_SerializedData: []
-  m_GUID: 336eb270ee43747fc8a4bb5ebae9e82d
-  m_SerializeEntries: []
+  m_GUID: b13d1c9cf8f8d4c5f8c3a929fd445cb8
+  m_SerializeEntries:
+  - m_GUID: 378d12a8fc8c9476d971c13dbda79ae0
+    m_Address: ui_common/UI_DeviceFrame.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui_common
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 4957754577297951465, guid: 378d12a8fc8c9476d971c13dbda79ae0,
+      type: 3}
+    m_TargetAsset: {fileID: 4957754577297951465, guid: 378d12a8fc8c9476d971c13dbda79ae0,
+      type: 3}
+  - m_GUID: a7958d7ee7d484634ab4ac49b531109a
+    m_Address: ui_common/UI_Camera.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui_common
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 1733540872882358, guid: a7958d7ee7d484634ab4ac49b531109a,
+      type: 3}
+    m_TargetAsset: {fileID: 1733540872882358, guid: a7958d7ee7d484634ab4ac49b531109a,
+      type: 3}
   m_ReadOnly: 0
-  m_Settings: {fileID: 11400000, guid: 25049d2ee458f46f8b99c124f08459aa, type: 2}
+  m_Settings: {fileID: 11400000, guid: 6a4154a3c11e045c394bb722db188edb, type: 2}
   m_SchemaSet:
-    m_Schemas: []
+    m_Schemas:
+    - {fileID: 11400000, guid: f12e7a8640658407a9b232b278ea343a, type: 2}
+    - {fileID: 11400000, guid: b86e06d771a3a4df2ac41e0d00b5fd2f, type: 2}

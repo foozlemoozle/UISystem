@@ -31,7 +31,7 @@ namespace com.keg.utils
 			_lastAdded.And( task );
 		}
 
-		public async void Exec()
+		public async Task Exec()
 		{
 			_lastAdded = null;
 			while( _promises.Count > 0 )
@@ -88,7 +88,7 @@ namespace com.keg.utils
 			_lastAdded.And( task, param );
 		}
 
-		public async void Exec()
+		public async Task Exec()
 		{
 			_lastAdded = null;
 			while( _promises.Count > 0 )
@@ -146,7 +146,7 @@ namespace com.keg.utils
 			_lastAdded.And( task, param1, param2 );
 		}
 
-		public async void Exec()
+		public async Task Exec()
 		{
 			_lastAdded = null;
 			while( _promises.Count > 0 )
@@ -204,7 +204,7 @@ namespace com.keg.utils
 			_lastAdded.And( task, param1, param2, param3 );
 		}
 
-		public async void Exec()
+		public async Task Exec()
 		{
 			_lastAdded = null;
 			while( _promises.Count > 0 )
