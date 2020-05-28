@@ -7,6 +7,7 @@ Allows the user to synchronously access a UI without worrying about any NREs.!--
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using com.keg.addressableloadmanagement;
 
 namespace com.keg.uisystem
 {
@@ -103,7 +104,7 @@ namespace com.keg.uisystem
 			}
 			if( ui != null )
 			{
-				GameObject.Destroy( ui.gameObject );
+				ui.gameObject.ReleaseAddressable();
 				ui = null;
 			}
 		}

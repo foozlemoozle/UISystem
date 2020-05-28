@@ -7,7 +7,7 @@ namespace com.keg.uisystem.tests
 {
     public class TestHudView : UIView
     {
-        public static readonly string PATH = "Assets/Test/TestHud.prefab";
+        public static readonly string PATH = "Assets/UISystem/Tests/Runtime/TestHud.prefab";
         public static readonly string GROUP = "ui_prefab";
 
         public override uint expectedPostLoadProcesses => 0;

@@ -15,38 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_Data:
     m_SerializedData: []
-  m_GUID: 0ff1966d6ca694c75a245a4b0c1a68aa
-  m_SerializeEntries:
-  - m_GUID: 03f2d13cc0e314bb78e0a543eaa75db0
-    m_Address: Assets/Test/TestDialog.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - ui_prefab
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 0f1c7219a5af2409292acc2a0f777eb0
-    m_Address: Assets/Test/TestWidget.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - ui_prefab
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: e36f89e7cf74c4e04b308e79002b172f
-    m_Address: Assets/Test/TestHud.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - ui_prefab
-    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+  m_GUID: 5f314b3e6c09c412bb8e29685bff5c54
+  m_SerializeEntries: []
   m_ReadOnly: 0
-  m_Settings: {fileID: 11400000, guid: 25049d2ee458f46f8b99c124f08459aa, type: 2}
+  m_Settings: {fileID: 11400000, guid: 6a4154a3c11e045c394bb722db188edb, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: cd19ffef50c8646aeb0acba78e72712f, type: 2}
-    - {fileID: 11400000, guid: 837faccecfb174c2d92253f4e370b493, type: 2}
+    - {fileID: 11400000, guid: 7e0d0536acc9045289fb063fa4f6e4c9, type: 2}
+    - {fileID: 11400000, guid: b40c8b6dc181a4e92a04a2d3e844a1b4, type: 2}

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ui_prefab
+  m_EditorClassIdentifier: 
+  m_GroupName: ui_prefab
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 07b17d906b25a4b5da371137379fbf63
+  m_SerializeEntries:
+  - m_GUID: 03f2d13cc0e314bb78e0a543eaa75db0
+    m_Address: Assets/UISystem/Tests/Runtime/TestDialog.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui_prefab
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0f1c7219a5af2409292acc2a0f777eb0
+    m_Address: Assets/UISystem/Tests/Runtime/TestWidget.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui_prefab
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 462355754038484292, guid: 0f1c7219a5af2409292acc2a0f777eb0,
+      type: 3}
+    m_TargetAsset: {fileID: 462355754038484292, guid: 0f1c7219a5af2409292acc2a0f777eb0,
+      type: 3}
+  - m_GUID: e36f89e7cf74c4e04b308e79002b172f
+    m_Address: Assets/UISystem/Tests/Runtime/TestHud.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ui_prefab
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 1794466785133217740, guid: e36f89e7cf74c4e04b308e79002b172f,
+      type: 3}
+    m_TargetAsset: {fileID: 1794466785133217740, guid: e36f89e7cf74c4e04b308e79002b172f,
+      type: 3}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 6a4154a3c11e045c394bb722db188edb, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d1d1bdb228cb44de3803dca3b87f2f58, type: 2}
+    - {fileID: 11400000, guid: a02627c77b0114937aff3af427a9675b, type: 2}

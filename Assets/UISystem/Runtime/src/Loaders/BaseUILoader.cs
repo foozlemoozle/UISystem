@@ -6,6 +6,7 @@ Handles loading a UI.!--
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using com.keg.addressableloadmanagement;
 
 namespace com.keg.uisystem
 {
@@ -104,7 +105,7 @@ namespace com.keg.uisystem
 
 			if( ui != null )
 			{
-				GameObject.Destroy( ui );
+				ui.ReleaseAddressable();
 			}
 
 			if( onFailed != null )
@@ -140,7 +141,7 @@ namespace com.keg.uisystem
 
 			if( _ui != null )
 			{
-				GameObject.Destroy( _ui.gameObject );
+				_ui.gameObject.ReleaseAddressable();
 			}
 
 			if( onAborted != null )

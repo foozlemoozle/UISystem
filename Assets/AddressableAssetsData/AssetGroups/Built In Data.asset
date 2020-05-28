@@ -15,24 +15,22 @@ MonoBehaviour:
   m_GroupName: Built In Data
   m_Data:
     m_SerializedData: []
-  m_GUID: 75027f04a64644ce083a1aaecaee7c71
+  m_GUID: bbfda7a5e1d274533b8c326d2d3b2e35
   m_SerializeEntries:
   - m_GUID: EditorSceneList
     m_Address: EditorSceneList
     m_ReadOnly: 1
     m_SerializedLabels: []
-    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: Resources
     m_Address: Resources
     m_ReadOnly: 1
     m_SerializedLabels: []
-    m_mainAssetType: 
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 1
-  m_Settings: {fileID: 11400000, guid: 25049d2ee458f46f8b99c124f08459aa, type: 2}
+  m_Settings: {fileID: 11400000, guid: 6a4154a3c11e045c394bb722db188edb, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: a275e9076cfb442f3832b108b06ede18, type: 2}
+    - {fileID: 11400000, guid: 81c34ce9ef5d543ac86ddfc00add497b, type: 2}
