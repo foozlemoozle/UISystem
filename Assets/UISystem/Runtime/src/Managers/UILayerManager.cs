@@ -84,7 +84,7 @@ namespace com.keg.uisystem
         {
             if( _layerRoot == null )
             {
-                _layerRoot = GameObject.Instantiate<DeviceFrame>( _layerPrefab, _uiManager.transform );
+                _layerRoot = GameObject.Instantiate<DeviceFrame>( _layerPrefab, _uiManager.layerRoot );
                 _layerRoot.canvas.renderMode = RenderMode.ScreenSpaceCamera;
                 _layerRoot.canvas.worldCamera = _uiManager.uiCamera;
             }

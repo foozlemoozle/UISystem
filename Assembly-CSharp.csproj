@@ -66,6 +66,8 @@
     <Compile Include="Assets\AddressableLoadManagement\Runtime\src\AddressableLoader.cs" />
     <Compile Include="Assets\AddressableLoadManagement\Runtime\src\AddressableManager.cs" />
     <Compile Include="Assets\AddressableLoadManagement\Runtime\src\IAddressableLoader.cs" />
+    <Compile Include="Assets\BootStrap\Runtime\src\BootStrap.cs" />
+    <Compile Include="Assets\BootStrap\Runtime\src\IManager.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\IHeapManager.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\IUIContext.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Loaders\AddressableUILoader.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Assets\UISystem\Runtime\src\UI\UIHandler.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\UI\UIID.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\UI\UIView.cs" />
+    <Compile Include="Assets\UISystem\Runtime\src\UIService.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Utils\CallbackUtils.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Utils\GameObjectUtils.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Utils\RequiredFieldAttribute.cs" />
@@ -89,6 +92,8 @@
     <Compile Include="Assets\UISystem\Tests\Runtime\TestHudView.cs" />
     <Compile Include="Assets\UISystem\Tests\Runtime\TestRunner.cs" />
     <Compile Include="Assets\UISystem\Tests\Runtime\TestWidgetView.cs" />
+    <Compile Include="Assets\Utils\Runtime\src\HashMap.cs" />
+    <Compile Include="Assets\Utils\Runtime\src\Promise.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
