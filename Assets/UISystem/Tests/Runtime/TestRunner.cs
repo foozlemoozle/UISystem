@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using com.keg.uisystem;
+using com.keg.bootstrap;
 
 namespace com.keg.uisystem.tests
 {
-    public class TestRunner : MonoBehaviour
+    public class TestRunner : UIService
     {
         private UIHandler<TestHudView> _handler;
-
-        public void Awake()
-        {
-            UIManager.ListenOnUIManagerSetup( LoadTestDialog );
-        }
 
         // Update is called once per frame
         void Update()
@@ -20,8 +16,16 @@ namespace com.keg.uisystem.tests
 
         }
 
-        private void OnDestroy()
+		protected override void OnSetupFinished( IManager manager )
+		{
+			base.OnSetupFinished( manager );
+            LoadTestDialog( manager as UIManager );
+		}
+
+		protected override void OnTeardown()
         {
+            base.OnTeardown();
+
             if( _handler != null )
             {
                 _handler.Teardown();

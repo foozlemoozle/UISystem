@@ -8,26 +8,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using com.keg.bootstrap;
+using System.Threading.Tasks;
+
 namespace com.keg.uisystem
 {
     [RequireComponent( typeof( Camera ) )]
-    public class UIManager : MonoBehaviour, IHeapManager
+    public class UIManager : IHeapManager, IManager
     {
-        private static event System.Action<UIManager> _onUIManagerSetup = CallbackUtils.NoOp<UIManager>;
-        private static UIManager _instance = null;
-
-        public static void ListenOnUIManagerSetup( System.Action<UIManager> onSetup )
-        {
-            if( _instance != null )
-            {
-                onSetup( _instance );
-            }
-            else
-            {
-                _onUIManagerSetup += onSetup;
-            }
-        }
-
         //For IHeapManager's implementatin of Min and Max sort.
         //Doesn't really mean anything for UIManager.  
         #region IHeapManager
@@ -36,11 +24,9 @@ namespace com.keg.uisystem
         public UISortingLayer.Layers LAYER { get { return UISortingLayer.Layers.UIManager; } }
         #endregion
 
-        [SerializeField]
-        private bool _setupOnAwake = true;
-        [SerializeField]
-        [RequiredField]
         private DeviceFrame _layerPrefab;
+        private Transform _layerRoot;
+        public Transform layerRoot => _layerRoot;
 
         private Dictionary<UISortingLayer.Layers, UILayerManager> _layers;
         private Dictionary<UIID, UISortingLayer.Layers> _uiToLayerMap;
@@ -52,23 +38,40 @@ namespace com.keg.uisystem
             {
                 if( _uiCamera == null )
                 {
-                    _uiCamera = this.GetComponent<Camera>();
+                    _uiCamera = _layerRoot.GetComponent<Camera>();
                 }
 
                 return _uiCamera;
             }
         }
 
-        public void Awake()
+        public UIManager( DeviceFrame layerPrefab, Transform layerRoot )
+		{
+            _layerPrefab = layerPrefab;
+            _layerRoot = layerRoot;
+		}
+
+		#region IManager
+		public async Task Setup( BootStrap bootstrap, System.Action<IManager> onSetup, System.Action<IManager> onSetupFail )
         {
-            if( _setupOnAwake )
-            {
-                Setup();
-            }
+            await Task.Run( SetupInternal );
+            onSetup( this );
         }
 
-        public void Setup()
-        {
+		public void Update()
+		{
+            ;
+		}
+
+		public async Task Teardown( System.Action onTeardown )
+		{
+            await Task.Run( TeardownInternal );
+            onTeardown();
+		}
+		#endregion
+
+		private void SetupInternal()
+		{
             if( _layers == null )
             {
                 _layers = new Dictionary<UISortingLayer.Layers, UILayerManager>( UISortingLayer.count, UISortingLayer.LayerComparer.Get() );
@@ -101,9 +104,6 @@ namespace com.keg.uisystem
                     _layerCullRefCount.Add( layerIter.Current, 0 );
                 }
             }
-
-            _instance = this;
-            _onUIManagerSetup( this );
         }
 
         private UILayerManager GenerateLayer( UISortingLayer.Layers layer )
@@ -205,5 +205,12 @@ namespace com.keg.uisystem
                 }
             }
         }
+
+		private void TeardownInternal()
+		{
+            _layers = null;
+            _uiToLayerMap = null;
+            _layerCullRefCount = null;
+		}
     }
 }
