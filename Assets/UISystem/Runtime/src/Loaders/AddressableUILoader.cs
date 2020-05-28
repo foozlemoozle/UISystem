@@ -8,17 +8,11 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using AddressableAssetsIResourceLocator = UnityEngine.AddressableAssets.ResourceLocators.IResourceLocator;
 using ResourceManagementIResourceLocator = UnityEngine.ResourceManagement.ResourceLocations.IResourceLocation;
+using com.keg.addressableloadmanagement;
 
 namespace com.keg.uisystem
 {
-    public interface IAddressableUILoader
-    {
-        string addressablePath { get; }
-        string addressableGroup { get; }
-        void OnLoadComplete( AsyncOperationHandle<UnityEngine.GameObject> loaded );
-    }
-
-    public class AddressableUILoader<T> : Loader<T>, IAddressableUILoader where T : UIView
+    public class AddressableUILoader<T> : Loader<T>, IAddressableLoader where T : UIView
     {
         public string addressablePath => _path;
         public string addressableGroup => _group;
@@ -37,15 +31,18 @@ namespace com.keg.uisystem
             AddressableManager.Get().QueueLoader( this );
         }
 
-        public void OnLoadComplete( AsyncOperationHandle<UnityEngine.GameObject> loaded )
+        public void OnLoadComplete( AsyncOperationHandle<UnityEngine.Object> loaded )
         {
+            UnityEngine.GameObject loadedAsset = loaded.Result as UnityEngine.GameObject;
+
             if( loaded.IsDone && loaded.Status == AsyncOperationStatus.Succeeded )
             {
-                OnLoaded( loaded.Result );
+                var instantiated = UnityEngine.GameObject.Instantiate( loadedAsset );
+                OnLoaded( instantiated );
             }
             else
             {
-                Reject( loaded.Result );
+                Reject( loadedAsset );
             }
         }
     }

@@ -7,7 +7,7 @@ namespace com.keg.uisystem.tests
 {
     public class TestDialogView : UIView
     {
-        public static readonly string PATH = "Assets/Test/TestDialog.prefab";
+        public static readonly string PATH = "Assets/UISystem/Tests/Runtime/TestDialog.prefab";
         public static readonly string GROUP = "ui_prefab";
 
         public override uint expectedPostLoadProcesses => 0;
