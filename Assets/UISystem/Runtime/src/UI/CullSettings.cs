@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/23/2019.!--
 Defines how adding a ui should impact the rendering of dialogs below it,
 and how it should impact UI camera clear settings.!--

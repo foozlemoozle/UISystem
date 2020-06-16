@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/27/2019.!--
 Exceptions for the UI system.!--
  */

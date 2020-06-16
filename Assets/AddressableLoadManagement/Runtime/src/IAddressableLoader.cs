@@ -1,4 +1,9 @@
-﻿using UnityEngine.ResourceManagement.AsyncOperations;
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace com.keg.addressableloadmanagement
 {

@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Exception = System.Exception;
@@ -9,6 +14,14 @@ namespace com.keg.bootstrap
 {
     public class BootStrap : MonoBehaviour
     {
+		public enum SetupStatus
+		{
+			NotStarted,
+			Started,
+			Complete,
+			Failed
+		}
+
         public static event System.Action onSetup;
         public static event System.Action onSetupFail;
 
@@ -17,18 +30,12 @@ namespace com.keg.bootstrap
 
         protected List<IManager> _managers;
 
-        private bool _setupFailed = false;
+        private SetupStatus _setupStatus = SetupStatus.NotStarted;
 
 		private int _lastIndex = 0;
 
         private PromiseChain<BootStrap, System.Action<IManager>, System.Action<IManager>> _setupChain
 			= new PromiseChain<BootStrap, System.Action<IManager>, System.Action<IManager>>();
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
 
 		public BootStrap Then( IManager manager )
 		{
@@ -42,9 +49,16 @@ namespace com.keg.bootstrap
             return this;
 		}
 
-		public void InitManagers()
+		public async Task InitManagers()
 		{
-            _setupChain.Exec();
+			_setupStatus = SetupStatus.Started;
+
+            await _setupChain.Exec();
+
+			if( _setupStatus != SetupStatus.Failed )
+			{
+				_setupStatus = SetupStatus.Complete;
+			}
 		}
 
 		protected void OnManagerSetup( IManager manager )
@@ -54,7 +68,7 @@ namespace com.keg.bootstrap
                 _managers = new List<IManager>();
 			}
 
-            if( !_setupFailed )
+            if( _setupStatus != SetupStatus.Failed )
             {
                 _managers.Add( manager );
             }
@@ -62,7 +76,7 @@ namespace com.keg.bootstrap
 
 		protected void OnManagerSetupFail( IManager manager )
 		{
-            _setupFailed = true;
+            _setupStatus = SetupStatus.Failed;
             _managers = new List<IManager>();
             onSetupFail();
 		}
@@ -100,6 +114,11 @@ namespace com.keg.bootstrap
         // Update is called once per frame
         private void Update()
         {
+			if( _setupStatus != SetupStatus.Complete )
+			{
+				return;
+			}
+
 			if( _staggerUpdates > 0 )
 			{
 				UpdatePartial();
@@ -147,7 +166,7 @@ namespace com.keg.bootstrap
 			teardownChain.Exec();
 		}
 
-		protected void OnTeardown()
+		protected virtual void OnTeardown()
 		{
 
 		}

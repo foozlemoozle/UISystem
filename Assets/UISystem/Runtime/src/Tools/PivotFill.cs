@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
  * Created by Kirk George 03/29/2020
  * Positions a UI element by X, Y position,
  * then fills Left, Right, Top, or Bottom.

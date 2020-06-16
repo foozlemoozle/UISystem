@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/23/2019.!--
 Component attached to ui gameobject.!--
  */
@@ -63,7 +68,7 @@ namespace com.keg.uisystem
 		protected uint completedPostLoadProcesses = 0;
 		private System.Action _onPostLoadProcessesComplete;
 
-		public void Initialize( UIID id, int minSort, int maxSort, IUIContext context )
+		public void Initialize( UIID id, int minSort, int maxSort, IUIContext context, ParamSet setupParams )
 		{
 			this.id = id;
 			this.context = context;
@@ -74,10 +79,10 @@ namespace com.keg.uisystem
 			canvas.sortingOrder = MIN_SORT;
 			canvas.sortingLayerName = this.context.parent.LAYER.ToString();
 
-			PostInitialize();
+			PostInitialize( setupParams );
 		}
 
-		protected virtual void PostInitialize()
+		protected virtual void PostInitialize( ParamSet setupParams )
 		{
 		}
 
@@ -121,10 +126,6 @@ namespace com.keg.uisystem
 		}
 		#endregion
 
-		public virtual void Setup( ParamSet paramSet )
-		{
-		}
-
 		#region IHeapManager
 		public UIHandler<UI> Attach<UI>( Loader<UI> loader, int requiredSortOrders, ParamSet setupParams = null, CullSettings cullSettings = CullSettings.NoCullNoClear ) where UI : UIView
 		{
@@ -138,7 +139,7 @@ namespace com.keg.uisystem
 
 			UpdateMinSortForNextChildUI( maxSort );
 
-			UIHandler<UI> handler = new UIHandler<UI>( loader, this, newId, minSort, maxSort )
+			UIHandler<UI> handler = new UIHandler<UI>( loader, this, newId, minSort, maxSort, setupParams )
 				.Exec( SetParent );
 
 			_managedUIs.Add( newId, handler );

@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/23/2019.!--
 Manages the heap for a specific ui layer.!-- 
 Requests to here should be forwarded by UIManager.!--
@@ -29,7 +34,6 @@ namespace com.keg.uisystem
         private int _currentSort;
 
         private UIGroupHeap _uiHeap;
-        private Dictionary<UIID, ParamSet> _setupParams;
 
         private DeviceFrame _layerPrefab;
         private DeviceFrame _layerRoot;
@@ -48,7 +52,6 @@ namespace com.keg.uisystem
             _layer = layer;
 
             _uiHeap = new UIGroupHeap();
-            _setupParams = new Dictionary<UIID, ParamSet>( UIID.UIIDComparer.Get() );
             _currentSort = MIN_SORT;
         }
 
@@ -58,12 +61,11 @@ namespace com.keg.uisystem
             ActivateLayerIfNeed();
 
             UIID newId = UIID.Generate( cullSettings );
-            _setupParams.Add( newId, setupParams );
             _uiHeap.Add( newId );
 
             int nextSort = _currentSort + requiredSortOrders;
 
-            return new UIHandler<UI>( loader, this, newId, _currentSort, nextSort )
+            return new UIHandler<UI>( loader, this, newId, _currentSort, nextSort, setupParams )
                 .Exec( ActivateCanvasIfNeeded )
                 .Exec( AttachToCanvas );
         }

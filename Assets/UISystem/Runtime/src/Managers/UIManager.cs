@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/23/2019.!--
 Manages all of the UI layers.!--
 Initial dialog loads should all go through here.!--

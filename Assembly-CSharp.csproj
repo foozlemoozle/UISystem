@@ -72,6 +72,8 @@
     <Compile Include="Assets\UISystem\Runtime\src\IUIContext.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Loaders\AddressableUILoader.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Loaders\BaseUILoader.cs" />
+    <Compile Include="Assets\UISystem\Runtime\src\Loaders\InstantiatedLoader.cs" />
+    <Compile Include="Assets\UISystem\Runtime\src\Loaders\PrefabLoader.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Loaders\ResourcesUILoader.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Managers\UILayerManager.cs" />
     <Compile Include="Assets\UISystem\Runtime\src\Managers\UIManager.cs" />

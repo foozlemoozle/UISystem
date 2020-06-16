@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/28/2019.!-- 
 Frame that sits within a canvas layer.!-- 
 Allows the effective screen to change shape depending on device notches.!--

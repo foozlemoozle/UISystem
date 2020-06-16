@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/27/2019.!--
 Definitions for UI layers and some helper functions.!--
 All values in Layers should match a sorting layer in unity's Tags and Layers.!--

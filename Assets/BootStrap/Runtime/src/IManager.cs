@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Exception = System.Exception;

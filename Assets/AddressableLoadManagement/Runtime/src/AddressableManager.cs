@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+using System.Collections.Generic;
 using Debug = UnityEngine.Debug;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;

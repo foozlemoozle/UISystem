@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/23/2019.!--
 Object returned synchronously from ui attach calls.!--
 Allows the user to synchronously access a UI without worrying about any NREs.!--
@@ -27,17 +32,20 @@ namespace com.keg.uisystem
 		protected int _minSort;
 		protected int _maxSort;
 
+		protected ParamSet _setupParams;
+
 		private Loader<UI> _loader;
 
 		private Queue<System.Action<UI>> _postLoadQueue;
 
-		public UIHandler( Loader<UI> loader, IUIContext context, UIID id, int minSort, int maxSort )
+		public UIHandler( Loader<UI> loader, IUIContext context, UIID id, int minSort, int maxSort, ParamSet @params )
 		{
 			_loader = loader;
 			this.context = context;
 			this.id = id;
 			_minSort = minSort;
 			_maxSort = maxSort;
+			_setupParams = @params;
 
 			_postLoadQueue = new Queue<System.Action<UI>>();
 
@@ -69,7 +77,7 @@ namespace com.keg.uisystem
 		private void OnUILoadComplete()
 		{
 			ui = _loader.ui;
-			ui.Initialize( id, _minSort, _maxSort, context );
+			ui.Initialize( id, _minSort, _maxSort, context, _setupParams );
 		}
 
 		private void OnUIPostLoadProcessesComplete()

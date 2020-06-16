@@ -1,4 +1,9 @@
-﻿/**
+﻿/// Created by: Kirk George
+/// Copyright: Kirk George
+/// Website: https://github.com/foozlemoozle?tab=repositories
+/// See upload date for date created.
+
+/**
 Created by Kirk George 05/23/2019.!--
 Handles loading a UI.!--
  */
@@ -89,10 +94,7 @@ namespace com.keg.uisystem
 			{
 				_current = LoadStep.AssetPostLoad;
 
-				if( onAccepted != null )
-				{
-					onAccepted();
-				}
+				onAccepted?.Invoke();
 
 				_ui.StartPostLoadProcesses( OnPostLoadProcessesComplete );
 			}
