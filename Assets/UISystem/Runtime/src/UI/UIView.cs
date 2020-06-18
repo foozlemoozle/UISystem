@@ -89,7 +89,6 @@ namespace com.keg.uisystem
 		public void StartPostLoadProcesses( System.Action onPostLoadProcessesComplete )
 		{
 			_onPostLoadProcessesComplete = onPostLoadProcessesComplete;
-			completedPostLoadProcesses = 0;
 
 			PreStartPostLoadProcesses();
 
@@ -198,6 +197,13 @@ namespace com.keg.uisystem
 		{
 			base.OnDestroy();
 
+			ClearChildUIs();
+
+			Teardown();
+		}
+
+		public void ClearChildUIs()
+		{
 			if( _managedUIs != null )
 			{
 				foreach( var kvp in _managedUIs )
@@ -208,8 +214,6 @@ namespace com.keg.uisystem
 
 			_managedUIs = null;
 			_managedUIsSetupParams = null;
-
-			Teardown();
 		}
 
 		protected virtual void Teardown()
