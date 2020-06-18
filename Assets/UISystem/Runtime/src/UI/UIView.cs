@@ -193,5 +193,27 @@ namespace com.keg.uisystem
 			//by default, just child it to this
 			ui.transform.SetParent( this.transform, false );
 		}
+
+		protected sealed override void OnDestroy()
+		{
+			base.OnDestroy();
+
+			if( _managedUIs != null )
+			{
+				foreach( var kvp in _managedUIs )
+				{
+					kvp.Value.Teardown();
+				}
+			}
+
+			_managedUIs = null;
+			_managedUIsSetupParams = null;
+
+			Teardown();
+		}
+
+		protected virtual void Teardown()
+		{
+		}
 	}
 }
