@@ -40,6 +40,7 @@ namespace com.keg.uisystem
 
         private UIManager _uiManager;
         private bool _showing = false;
+        public bool showing => _showing;
 
         public UILayerManager()
         {
@@ -80,7 +81,17 @@ namespace com.keg.uisystem
 
             return removed;
         }
+
+        public bool Contains( UIID id )
+		{
+            return _uiHeap.Contains( id );
+		}
         #endregion
+
+        public bool IsEmpty()
+		{
+            return _uiHeap.IsEmpty();
+		}
 
         private void ActivateLayerIfNeed()
         {
@@ -90,6 +101,15 @@ namespace com.keg.uisystem
                 _layerRoot.canvas.renderMode = RenderMode.ScreenSpaceCamera;
                 _layerRoot.canvas.worldCamera = _uiManager.uiCamera;
             }
+
+            if( _showing )
+			{
+                ActivateCanvasIfNeeded();
+			}
+            else
+			{
+                HideCanvasIfNeeded();
+			}
         }
 
         private void ActivateCanvasIfNeeded<UI>( UI ui ) where UI : UIView
@@ -149,14 +169,23 @@ namespace com.keg.uisystem
         private class UIGroupHeap
         {
             private List<UIGroup> _groups;
+            private HashSet<UIID> _uiLookup;
 
             public UIGroupHeap()
             {
                 _groups = new List<UIGroup>();
+                _uiLookup = new HashSet<UIID>();
             }
+
+            public bool Contains( UIID ui )
+			{
+                return _uiLookup.Contains( ui );
+			}
 
             public void Add( UIID ui )
             {
+                _uiLookup.Add( ui );
+
                 if( ( ui.cullSettings & CullSettings.CullBelow ) != 0 )
                 {
                     CreateNewTopGroup( ui );
@@ -189,6 +218,8 @@ namespace com.keg.uisystem
 
             public bool Remove( UIID ui )
             {
+                _uiLookup.Remove( ui );
+
                 //try to remove from the top to bottom.
                 //this should be more effecient, since dialogs removed should more likely be on the top
                 int count = _groups.Count;

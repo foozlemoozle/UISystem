@@ -19,5 +19,7 @@ namespace com.keg.uisystem
 
 		UIHandler<UI> Attach<UI>( Loader<UI> loader, int requiredSortOrders, ParamSet setupParams = null, CullSettings cullSettings = CullSettings.NoCullNoClear ) where UI : UIView;
 		bool Remove( UIID id );
+
+		bool Contains( UIID id );
 	}
 }

@@ -192,17 +192,28 @@ namespace com.keg.uisystem
 
             return false;
         }
+
+        public bool Contains( UIID id )
+		{
+            return _uiToLayerMap.ContainsKey( id );
+		}
         #endregion
 
         public UIHandler<UI> Attach<UI>( Loader<UI> loader, UISortingLayer.Layers uiLayer, int requiredSortOrders, ParamSet setupParams = null, CullSettings cullSettings = CullSettings.NoCullNoClear ) where UI : UIView
         {
             if( _layers.ContainsKey( uiLayer ) )
             {
-                UIHandler<UI> handler = _layers[ uiLayer ].Attach<UI>( loader, requiredSortOrders, setupParams, cullSettings )
-                    .Exec( UpdateCameraRenderSettings<UI> )
-                    .Exec( CheckAndCullLowerUIs<UI> );
+                UIHandler<UI> handler = _layers[ uiLayer ].Attach<UI>( loader, requiredSortOrders, setupParams, cullSettings );
 
                 _uiToLayerMap.Add( handler.id, uiLayer );
+
+                UpdateCameraRenderSettings( handler.id );
+                CheckAndCullLowerUIs( handler.id );
+
+                if( IsOnTopActiveLayer( handler.id ) )
+                {
+                    _layers[ _uiToLayerMap[ handler.id ] ].ShowLayer();
+                }
 
                 return handler;
             }
@@ -212,25 +223,25 @@ namespace com.keg.uisystem
             }
         }
 
-        private void UpdateCameraRenderSettings<UI>( UI ui ) where UI : UIView
+        private void UpdateCameraRenderSettings( UIID uiid )
         {
-            CameraClearFlags clearFlags = ( ui.id.cullSettings & CullSettings.ClearCamera ) == 0 ? CameraClearFlags.SolidColor : CameraClearFlags.Depth;
+            CameraClearFlags clearFlags = ( uiid.cullSettings & CullSettings.ClearCamera ) == 0 ? CameraClearFlags.SolidColor : CameraClearFlags.Depth;
             if( uiCamera.clearFlags != clearFlags )
             {
                 uiCamera.clearFlags = clearFlags;
             }
         }
 
-        private void CheckAndCullLowerUIs<UI>( UI ui ) where UI : UIView
+        private void CheckAndCullLowerUIs( UIID uiid )
         {
-            if( ( ui.id.cullSettings & CullSettings.CullBelow ) == 0 )
+            if( ( uiid.cullSettings & CullSettings.CullBelow ) == 0 )
             {
                 return;
             }
 
-            int layer = (int)_uiToLayerMap[ ui.id ];
+            int layer = (int)_uiToLayerMap[ uiid ];
 
-            _layers[ (UISortingLayer.Layers)layer ].HideBelow( ui.id );
+            _layers[ (UISortingLayer.Layers)layer ].HideBelow( uiid );
 
             for( int i = layer - 1; i >= 0; --i )
             {
@@ -239,10 +250,32 @@ namespace com.keg.uisystem
             }
         }
 
+        private bool IsOnTopActiveLayer( UIID id )
+		{
+            int layer = (int)_uiToLayerMap[ id ];
+            int topLayer = (int)UISortingLayer.Layers.Debug;
+            for( int i = topLayer; i > layer; --i )
+			{
+                if( _layers[ (UISortingLayer.Layers)i ].showing )
+				{
+                    return false;
+				}
+			}
+
+            return true;
+		}
+
         public bool Remove( UISortingLayer.Layers layer, UIID uiid )
         {
             CheckAndShowLowerUIs( uiid );
-            return _layers[ layer ].Remove( uiid );
+            bool isRemoved = _layers[ layer ].Remove( uiid );
+
+            if( _layers[ layer ].IsEmpty() )
+			{
+                _layers[ layer ].HideLayer();
+			}
+
+            return isRemoved;
         }
 
         private void CheckAndShowLowerUIs( UIID uiid )

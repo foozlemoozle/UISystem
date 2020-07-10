@@ -162,6 +162,11 @@ namespace com.keg.uisystem
 
 			return false;
 		}
+
+		public bool Contains( UIID id )
+		{
+			return _managedUIs.ContainsKey( id );
+		}
 		#endregion
 
 		private void CheckAndInitializeChildUIManagement()
